@@ -1,0 +1,108 @@
+vendor/
+build/
+phpunit.xml
+composer.lock
+bin/
+.idea/workspace.xml
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+# Misc files
+.idea/.name
+.idea/markdown-navigator.xml
+.idea/markdown-navigator
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# JIRA plugin
+
+# Editor-based Rest Client
+
+# Misc files
+

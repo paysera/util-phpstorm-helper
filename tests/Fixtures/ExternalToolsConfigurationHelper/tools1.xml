@@ -1,0 +1,9 @@
+<toolSet name="External Tools">
+    <tool name="My tool" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+        <exec>
+            <option name="COMMAND" value="php" />
+            <option name="PARAMETERS" value="-a" />
+            <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+        </exec>
+    </tool>
+</toolSet>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ComposerSettings" doNotAsk="true" />
+    <component name="PhpDebugGeneral" listening_started="true" />
+    <component name="PhpServers">
+        <servers>
+            <server id="0caaf24a-b1a0-c334-40c0-6afe99df9863" host="example.com" name="example.com" use_path_mappings="true">
+                <path_mappings>
+                    <mapping local-root="$PROJECT_DIR$" remote-root="C:\My Projects\MyProject"/>
+                </path_mappings>
+            </server>
+        </servers>
+    </component>
+    <component name="TimeTrackingManager">
+        <option name="totallyTimeSpent" value="21371000" />
+    </component>
+</project>

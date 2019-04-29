@@ -1,0 +1,8 @@
+{
+  "require": {
+    "symfony/symfony": "^4.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+use Paysera\PhpStormHelper\PhpStormHelperApplication;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$application = new PhpStormHelperApplication();
+
+$application->run();

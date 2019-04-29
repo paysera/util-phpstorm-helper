@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE" updatePackages="false">
+        <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+        <executablePath>php composer.phar</executablePath>
+    </component>
+    <component name="PhpDebugGeneral" listening_started="true" />
+    <component name="PhpServers">
+        <servers />
+    </component>
+    <component name="TimeTrackingManager">
+        <option name="totallyTimeSpent" value="21371000" />
+    </component>
+</project>

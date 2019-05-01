@@ -62,13 +62,13 @@ class DirectoryResolver
             ->depth(0)
             ->path($pattern)
             ->sortByName()
-            ->reverseSorting()
             ->ignoreDotFiles(false)
             ->getIterator()
         ;
-        if ($directoryIterator->valid()) {
+        $directories = array_reverse(iterator_to_array($directoryIterator));
+        if (count($directories) > 0) {
             /** @var SplFileInfo $fileInfo */
-            $fileInfo = $directoryIterator->current();
+            $fileInfo = reset($directories);
             return $fileInfo->getPathname();
         }
 

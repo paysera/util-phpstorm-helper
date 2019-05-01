@@ -65,7 +65,9 @@ Once:
 php-storm-helper set-up-global-configuration
 ```
 
-For each project, once:
+If you have, remove `.idea` from global gitignore file.
+
+For each project, after project was opened by PhpStorm at least once:
 ```bash
 php-storm-helper set-up-configuration
 php-storm-helper configure-composer

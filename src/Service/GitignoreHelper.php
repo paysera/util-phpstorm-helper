@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Service;
 
-use GitIgnoreWriter\GitIgnoreWriter;
+use Paysera\PhpStormHelper\Service\Gitignore\ExtendedWriter;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitignoreHelper
@@ -23,7 +23,7 @@ class GitignoreHelper
             return;
         }
 
-        $writer = new GitIgnoreWriter($gitignorePath);
+        $writer = new ExtendedWriter($gitignorePath);
         $writer
             ->delete('.idea')
             ->delete('.idea/')

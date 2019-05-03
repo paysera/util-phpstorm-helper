@@ -31,6 +31,7 @@ class GitignoreHelperTest extends TestCase
             $filesystem->dumpFile($target, $original);
 
             $helper->setupGitignore($target);
+            $helper->setupGitignore($target);
 
             $this->assertStringEqualsFile($target, $expected);
         } finally {
@@ -42,12 +43,19 @@ class GitignoreHelperTest extends TestCase
     {
         return [
             [
-                "first\nsecond\n# comment\n\nthird\n.idea/*.iml\n# configuration\nworkspace.xml\n",
-                "first\n.idea/\nsecond\n# comment\n\nthird",
+                "first\nsecond\n# comment 1\n\nthird\n.idea/*.iml\n# comment 2\nworkspace.xml\n",
+                "first\n.idea/\nsecond\n# comment 1\n\nthird",
                 [
                     '.idea/*.iml',
-                    '# configuration',
+                    '# comment 2',
                     'workspace.xml',
+                ],
+            ],
+            [
+                "first\nsecond\n# comment 1\n\nthird\n.idea/*.iml\n\n# comment 2\n\nworkspace.xml\n",
+                "first\n.idea/\nsecond\n# comment 1\n\nthird",
+                [
+                    ".idea/*.iml\n\n# comment 2\n\nworkspace.xml",
                 ],
             ],
             [

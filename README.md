@@ -56,6 +56,11 @@ PATH=$PATH:`composer global config bin-dir --absolute`
 php-storm-helper --help
 ```
 
+You will also need zip library to download and extract the plugins. To install on Ubuntu:
+```bash
+sudo apt-get install php-zip
+```
+
 ## Usage
 
 ### TL;DR;
@@ -70,7 +75,7 @@ If you have, remove `.idea` from global gitignore file.
 For each project, after project was opened by PhpStorm at least once:
 ```bash
 php-storm-helper set-up-configuration
-php-storm-helper configure-composer
+php-storm-helper configure-workspace
 php-storm-helper set-up-server project-url-address.docker:80 /project-path-inside/container
 ```
 
@@ -120,10 +125,10 @@ For example:
 php-storm-helper set-up-server my-project.docker:443 /project
 ```
 
-### Configuring composer
+### Configuring composer and file template usage
 
 ```bash
-php-storm-helper configure-composer [project-root-dir]
+php-storm-helper configure-workspace [project-root-dir]
 ```
 
 ### Configuring external tools and installing plugins

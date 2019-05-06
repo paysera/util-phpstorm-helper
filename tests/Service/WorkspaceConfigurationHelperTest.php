@@ -157,4 +157,39 @@ class WorkspaceConfigurationHelperTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @param string $filename
+     * @param string $expected
+     *
+     * @dataProvider provideTestDataForConfigureFileTemplateScheme
+     */
+    public function testcCnfigureFileTemplateScheme(string $filename, string $expected)
+    {
+        $helper = new WorkspaceConfigurationHelper(new DomHelper());
+
+        $path = self::TARGET . '/' . $filename;
+        $helper->configureFileTemplateScheme($path);
+
+        $expected = $expected ?? $filename;
+        $this->assertXmlFileEqualsXmlFile(self::TARGET . '/expected/' . $expected, $path);
+    }
+
+    public function provideTestDataForConfigureFileTemplateScheme()
+    {
+        return [
+            [
+                'workspace1.xml',
+                'workspace1_file_template_scheme.xml',
+            ],
+            [
+                'workspace1_with_different_file_template_scheme.xml',
+                'workspace1_file_template_scheme.xml',
+            ],
+            [
+                'workspace1_with_file_template_scheme.xml',
+                'workspace1_file_template_scheme.xml',
+            ],
+        ];
+    }
 }

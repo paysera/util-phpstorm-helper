@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConfigureComposerCommand extends Command
+class ConfigureWorkspaceCommand extends Command
 {
     private $workspaceConfigurationHelper;
 
@@ -24,7 +24,7 @@ class ConfigureComposerCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('configure-composer')
+            ->setName('configure-workspace')
             ->addArgument(
                 'project-root-dir',
                 InputArgument::OPTIONAL,
@@ -52,6 +52,7 @@ class ConfigureComposerCommand extends Command
         $composerExecutable = $input->getOption('composer-executable');
 
         $this->workspaceConfigurationHelper->configureComposer($target, $composerExecutable);
+        $this->workspaceConfigurationHelper->configureFileTemplateScheme($target);
 
         $output->writeln('Restart PhpStorm instance for changes to take effect');
     }

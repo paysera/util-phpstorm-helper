@@ -62,16 +62,11 @@ class WorkspaceConfigurationHelper
 
         $projectElement = $this->domHelper->findNode($document, 'project');
 
-        $component = $this->domHelper->findOptionalNode(
+        $component = $this->domHelper->findOrCreateChildNode(
             $projectElement,
             'component',
             ['name' => 'ComposerSettings']
         );
-        if ($component === null) {
-            $component = $document->createElement('component');
-            $component->setAttribute('name', 'ComposerSettings');
-            $projectElement->appendChild($component);
-        }
 
         $component->setAttribute('doNotAsk', 'true');
         $component->setAttribute('synchronizationState', 'SYNCHRONIZE');
@@ -82,6 +77,27 @@ class WorkspaceConfigurationHelper
 
         $executablePath = $this->domHelper->findOrCreateChildNode($component, 'executablePath');
         $executablePath->nodeValue = $composerExecutable;
+
+        $this->domHelper->saveDocument($pathToWorkspaceXml, $document);
+    }
+
+    public function configureFileTemplateScheme(string $pathToWorkspaceXml)
+    {
+        $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
+
+        $projectElement = $this->domHelper->findNode($document, 'project');
+
+        $component = $this->domHelper->findOrCreateChildNode(
+            $projectElement,
+            'component',
+            ['name' => 'FileTemplateManagerImpl']
+        );
+        $option = $this->domHelper->findOrCreateChildNode(
+            $component,
+            'option',
+            ['name' => 'SCHEME']
+        );
+        $option->setAttribute('value', 'Project');
 
         $this->domHelper->saveDocument($pathToWorkspaceXml, $document);
     }

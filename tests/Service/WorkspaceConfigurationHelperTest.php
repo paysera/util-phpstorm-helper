@@ -39,7 +39,7 @@ class WorkspaceConfigurationHelperTest extends TestCase
      */
     public function testAddServer(string $filename, string $hostWithPort, string $remoteRoot, string $expected = null)
     {
-        $helper = new WorkspaceConfigurationHelper(new DomHelper());
+        $helper = new WorkspaceConfigurationHelper(new DomHelper(), new Filesystem());
 
         $path = self::TARGET . '/' . $filename;
         $helper->addServer(
@@ -125,7 +125,7 @@ class WorkspaceConfigurationHelperTest extends TestCase
      */
     public function testConfigureComposer(string $filename, string $composerExecutable, string $expected)
     {
-        $helper = new WorkspaceConfigurationHelper(new DomHelper());
+        $helper = new WorkspaceConfigurationHelper(new DomHelper(), new Filesystem());
 
         $path = self::TARGET . '/' . $filename;
         $helper->configureComposer(
@@ -164,9 +164,9 @@ class WorkspaceConfigurationHelperTest extends TestCase
      *
      * @dataProvider provideTestDataForConfigureFileTemplateScheme
      */
-    public function testcCnfigureFileTemplateScheme(string $filename, string $expected)
+    public function testConfigureFileTemplateScheme(string $filename, string $expected)
     {
-        $helper = new WorkspaceConfigurationHelper(new DomHelper());
+        $helper = new WorkspaceConfigurationHelper(new DomHelper(), new Filesystem());
 
         $path = self::TARGET . '/' . $filename;
         $helper->configureFileTemplateScheme($path);
@@ -192,4 +192,33 @@ class WorkspaceConfigurationHelperTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @param string $filename
+     * @param string $expected
+     *
+     * @dataProvider provideTestDataForSetupPhpUnitRunConfiguration
+     */
+    public function testSetupPhpUnitRunConfiguration(string $filename, string $expected)
+    {
+        $helper = new WorkspaceConfigurationHelper(new DomHelper(), new Filesystem());
+
+        $path = self::TARGET . '/' . $filename;
+        $helper->setupPhpUnitRunConfiguration($path);
+
+        $expected = $expected ?? $filename;
+        $this->assertXmlFileEqualsXmlFile(self::TARGET . '/expected/' . $expected, $path);
+    }
+
+    public function provideTestDataForSetupPhpUnitRunConfiguration()
+    {
+        return [
+            [
+                'workspace1.xml',
+                'workspace1_phpunit_run_configuration.xml',
+            ],
+        ];
+    }
+
+
 }

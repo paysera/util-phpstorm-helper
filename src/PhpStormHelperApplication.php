@@ -38,10 +38,10 @@ class PhpStormHelperApplication extends Application
                 ])
             ),
             new SetUpServerCommand(
-                new WorkspaceConfigurationHelper($domHelper)
+                new WorkspaceConfigurationHelper($domHelper, $filesystem)
             ),
             new ConfigureWorkspaceCommand(
-                new WorkspaceConfigurationHelper($domHelper)
+                new WorkspaceConfigurationHelper($domHelper, $filesystem)
             ),
             new SetUpGlobalConfigurationCommand(
                 new ExternalToolsConfigurationHelper(new DirectoryResolver(), $filesystem, $domHelper),

@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Service;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class WorkspaceConfigurationHelper
 {
     private $domHelper;
+    private $filesystem;
 
-    public function __construct(DomHelper $domHelper)
+    public function __construct(DomHelper $domHelper, Filesystem $filesystem)
     {
         $this->domHelper = $domHelper;
+        $this->filesystem = $filesystem;
     }
 
     public function addServer(string $pathToWorkspaceXml, string $hostWithPort, string $remoteRoot)
@@ -25,6 +29,7 @@ class WorkspaceConfigurationHelper
             $port = $parts[1];
         }
 
+        $this->ensureWorkspaceFileExists($pathToWorkspaceXml);
         $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
 
         $projectElement = $this->domHelper->findNode($document, 'project');
@@ -58,6 +63,7 @@ class WorkspaceConfigurationHelper
 
     public function configureComposer(string $pathToWorkspaceXml, string $composerExecutable = 'composer')
     {
+        $this->ensureWorkspaceFileExists($pathToWorkspaceXml);
         $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
 
         $projectElement = $this->domHelper->findNode($document, 'project');
@@ -83,6 +89,7 @@ class WorkspaceConfigurationHelper
 
     public function configureFileTemplateScheme(string $pathToWorkspaceXml)
     {
+        $this->ensureWorkspaceFileExists($pathToWorkspaceXml);
         $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
 
         $projectElement = $this->domHelper->findNode($document, 'project');
@@ -102,6 +109,39 @@ class WorkspaceConfigurationHelper
         $this->domHelper->saveDocument($pathToWorkspaceXml, $document);
     }
 
+    public function setupPhpUnitRunConfiguration(string $pathToWorkspaceXml)
+    {
+        $this->ensureWorkspaceFileExists($pathToWorkspaceXml);
+        $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
+
+        $projectElement = $this->domHelper->findNode($document, 'project');
+
+        $component = $this->domHelper->findOrCreateChildNode(
+            $projectElement,
+            'component',
+            ['name' => 'RunManager']
+        );
+        $configuration = $this->domHelper->findOrCreateChildNode(
+            $component,
+            'configuration',
+            ['name' => 'PHPUnit', 'type' => 'PHPUnitRunConfigurationType', 'factoryName' => 'PHPUnit']
+        );
+
+        $testRunnerNode = $this->domHelper->findOrCreateChildNode(
+            $configuration,
+            'TestRunner'
+        );
+        $testRunnerNode->setAttribute('scope', 'XML');
+
+        $methodNode = $this->domHelper->findOrCreateChildNode(
+            $configuration,
+            'method'
+        );
+        $methodNode->setAttribute('v', '2');
+
+        $this->domHelper->saveDocument($pathToWorkspaceXml, $document);
+    }
+
     private function generateId(string $name)
     {
         $hash = sha1($name);
@@ -111,5 +151,21 @@ class WorkspaceConfigurationHelper
             . substr($hash, 16, 4) . '-'
             . substr($hash, 20, 12)
         ;
+    }
+
+    private function ensureWorkspaceFileExists(string $pathToWorkspaceXml)
+    {
+        if (file_exists($pathToWorkspaceXml)) {
+            return;
+        }
+
+        $emptyWorkspaceFile = <<<'FILE'
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4"/>
+FILE;
+
+        $directory = dirname($pathToWorkspaceXml);
+        $this->filesystem->mkdir($directory);
+        $this->filesystem->dumpFile($pathToWorkspaceXml, $emptyWorkspaceFile);
     }
 }

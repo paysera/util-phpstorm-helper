@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ComposerSettings" doNotAsk="true" />
+    <component name="PhpDebugGeneral" listening_started="true" />
+    <component name="PhpServers">
+        <servers />
+    </component>
+    <component name="TimeTrackingManager">
+        <option name="totallyTimeSpent" value="21371000" />
+    </component>
+    <component name="RunManager">
+        <configuration name="PHPUnit" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+            <TestRunner scope="XML" />
+            <method v="2" />
+        </configuration>
+    </component>
+</project>

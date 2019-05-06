@@ -53,6 +53,7 @@ class ConfigureWorkspaceCommand extends Command
 
         $this->workspaceConfigurationHelper->configureComposer($target, $composerExecutable);
         $this->workspaceConfigurationHelper->configureFileTemplateScheme($target);
+        $this->workspaceConfigurationHelper->setupPhpUnitRunConfiguration($target);
 
         $output->writeln('Restart PhpStorm instance for changes to take effect');
     }

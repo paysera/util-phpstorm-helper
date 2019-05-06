@@ -13,6 +13,7 @@ $xml = <<<'XML'
       <option name="m_minLength" value="0" />
       <option name="m_maxLength" value="0" />
     </inspection_tool>
+    <inspection_tool class="PhpDocMissingThrowsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpDocRedundantThrowsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpFullyQualifiedNameUsageInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpIllegalPsrClassPathInspection" enabled="true" level="WARNING" enabled_by_default="true" />

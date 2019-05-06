@@ -65,19 +65,23 @@ sudo apt-get install php-zip
 
 ### TL;DR;
 
-Once:
+Once (better to run when PhpStorm is closed):
 ```bash
 php-storm-helper set-up-global-configuration
 ```
 
 If you have, remove `.idea` from global gitignore file.
 
-For each project, after project was opened by PhpStorm at least once:
+For each project:
+- Close project
 ```bash
 php-storm-helper set-up-configuration
 php-storm-helper configure-workspace
+# change following with your project address and path in docker container
 php-storm-helper set-up-server project-url-address.docker:80 /project-path-inside/container
 ```
+- Reopen project
+
 
 Read more for detailed information.
 
@@ -97,7 +101,8 @@ php-storm-helper set-up-configuration [project-root-dir] [path-to-configuration-
 ```
 
 Features of default configuration:
-* customized code style and generated code templates to be compatible with [Paysera style guide](https://github.com/paysera/php-style-guide);
+* customized code style and generated code templates to be compatible with
+[Paysera style guide](https://github.com/paysera/php-style-guide);
 * customized inspections – some disabled, some optional ones enabled;
 * MariaDB SQL dialect;
 * Symfony plugin enabled for the project;
@@ -105,10 +110,12 @@ Features of default configuration:
 * directories are marked as they should:
   * vendor directories not added as Git roots – no git update is called for libraries after Project update;
   * generated files are marked as excluded – you won't see duplicated find results;
-  * configuration for vendors – vendors are excluded, but inside include path. This makes Scopes with following configuration:
+  * configuration for vendors – vendors are excluded, but inside include path. This makes Scopes with following
+  configuration:
     * `Project Files` (or `In Project`) – vendors are not included;
     * `Project and Libraries` – vendors are included. Choose `Scope → Project and Libraries` when searching;
-* PHP interpreter as docker with correct image. This allows to run unit tests using PhpStorm integration in the right environment;
+* PHP interpreter as docker with correct image. This allows to run unit tests using PhpStorm integration in the right
+environment;
 * `php-cs-fixer` integration – if something's wrong, it will be marked as Weak Warning.
 
 Some features require additional options or already existing files (like `.php_cs`) in current directory.

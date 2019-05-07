@@ -46,6 +46,6 @@
         "test": ["@phpunit", "@test-cs"]
     },
     "bin": [
-        "php-storm-helper"
+        "phpstorm-helper"
     ]
 }

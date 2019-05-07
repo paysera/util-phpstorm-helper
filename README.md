@@ -44,7 +44,7 @@ composer require paysera/util-phpstorm-helper
 
 As executable:
 * clone repository;
-* run `./php-storm-helper --help`
+* run `./phpstorm-helper --help`
 
 You can also install library as [global composer dependency](https://getcomposer.org/doc/03-cli.md#global):
 ```bash
@@ -53,7 +53,7 @@ composer global require paysera/util-phpstorm-helper
 # add composer bin directory to PATH – this example is just for this session
 PATH=$PATH:`composer global config bin-dir --absolute`
 
-php-storm-helper --help
+phpstorm-helper --help
 ```
 
 You will also need zip library to download and extract the plugins. To install on Ubuntu:
@@ -67,7 +67,7 @@ sudo apt-get install php-zip
 
 Once (better to run when PhpStorm is closed):
 ```bash
-php-storm-helper set-up-global-configuration
+phpstorm-helper set-up-global-configuration
 ```
 
 If you have, remove `.idea` from global gitignore file.
@@ -75,10 +75,10 @@ If you have, remove `.idea` from global gitignore file.
 For each project:
 - Close project
 ```bash
-php-storm-helper set-up-configuration
-php-storm-helper configure-workspace
+phpstorm-helper set-up-configuration
+phpstorm-helper set-up-workspace
 # change following with your project address and path in docker container
-php-storm-helper set-up-server project-url-address.docker:80 /project-path-inside/container
+phpstorm-helper set-up-server project-url-address.docker:80 /project-path-inside/container
 ```
 - Reopen project
 
@@ -97,7 +97,7 @@ These are done in `workspace.xml` file, which cannot be versioned;
 ### Setting up versioned configuration files
 
 ```bash
-php-storm-helper set-up-configuration [project-root-dir] [path-to-configuration-template-structure]
+phpstorm-helper set-up-configuration [project-root-dir] [path-to-configuration-template-structure]
 ```
 
 Features of default configuration:
@@ -124,24 +124,24 @@ Run with `--help` for more information.
 ### Setting up servers
 
 ```bash
-php-storm-helper set-up-server host-with-port remote-root [project-root-dir]
+phpstorm-helper set-up-server host-with-port remote-root [project-root-dir]
 ```
 
 For example:
 ```bash
-php-storm-helper set-up-server my-project.docker:443 /project
+phpstorm-helper set-up-server my-project.docker:443 /project
 ```
 
 ### Configuring composer and file template usage
 
 ```bash
-php-storm-helper configure-workspace [project-root-dir]
+phpstorm-helper set-up-workspace [project-root-dir]
 ```
 
 ### Configuring external tools and installing plugins
 
 ```bash
-php-storm-helper set-up-global-configuration [path-to-config-file]
+phpstorm-helper set-up-global-configuration [path-to-config-file]
 ```
 
 `path-to-config-file` is path to `php` configuration file, which has the following structure:

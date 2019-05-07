@@ -7,7 +7,7 @@ use Alchemy\Zippy\Adapter\AdapterContainer;
 use Alchemy\Zippy\FileStrategy\ZipFileStrategy;
 use Alchemy\Zippy\Zippy;
 use GuzzleHttp\Client;
-use Paysera\PhpStormHelper\Command\ConfigureWorkspaceCommand;
+use Paysera\PhpStormHelper\Command\SetUpWorkspaceCommand;
 use Paysera\PhpStormHelper\Command\SetUpConfigurationCommand;
 use Paysera\PhpStormHelper\Command\SetUpGlobalConfigurationCommand;
 use Paysera\PhpStormHelper\Command\SetUpServerCommand;
@@ -40,7 +40,7 @@ class PhpStormHelperApplication extends Application
             new SetUpServerCommand(
                 new WorkspaceConfigurationHelper($domHelper, $filesystem)
             ),
-            new ConfigureWorkspaceCommand(
+            new SetUpWorkspaceCommand(
                 new WorkspaceConfigurationHelper($domHelper, $filesystem)
             ),
             new SetUpGlobalConfigurationCommand(

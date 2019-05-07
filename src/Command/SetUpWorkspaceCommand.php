@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConfigureWorkspaceCommand extends Command
+class SetUpWorkspaceCommand extends Command
 {
     private $workspaceConfigurationHelper;
 
@@ -24,7 +24,7 @@ class ConfigureWorkspaceCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('configure-workspace')
+            ->setName('set-up-workspace')
             ->addArgument(
                 'project-root-dir',
                 InputArgument::OPTIONAL,

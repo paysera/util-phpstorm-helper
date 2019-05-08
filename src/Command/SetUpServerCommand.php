@@ -49,6 +49,8 @@ class SetUpServerCommand extends Command
             $target = realpath('.');
         }
 
+        $target .= '/.idea/workspace.xml';
+
         $this->workspaceConfigurationHelper->addServer(
             $target,
             $input->getArgument('host-with-port'),

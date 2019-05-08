@@ -19,25 +19,29 @@ class WorkspaceConfigurationHelper
     public function addServer(string $pathToWorkspaceXml, string $hostWithPort, string $remoteRoot)
     {
         if (strpos($hostWithPort, ':') === false) {
-            $name = $hostWithPort;
-            $host = $name;
+            $host = $hostWithPort;
+            $name = $host;
             $port = null;
         } else {
             $parts = explode(':', $hostWithPort, 2);
-            $name = $parts[0];
-            $host = $name;
+            $host = $parts[0];
             $port = $parts[1];
+            $name = $port === '80' ? $host : $hostWithPort;
         }
 
         $this->ensureWorkspaceFileExists($pathToWorkspaceXml);
         $document = $this->domHelper->loadDocument($pathToWorkspaceXml);
 
         $projectElement = $this->domHelper->findNode($document, 'project');
-        $serversComponent = $this->domHelper->findNode($projectElement, 'component', ['name' => 'PhpServers']);
+        $serversComponent = $this->domHelper->findOrCreateChildNode(
+            $projectElement,
+            'component',
+            ['name' => 'PhpServers']
+        );
 
         $internalNode = $this->domHelper->findOrCreateChildNode($serversComponent, 'servers');
 
-        $serverNode = $this->domHelper->findOptionalNode($internalNode, 'server', ['name' => $name]);
+        $serverNode = $this->domHelper->findOptionalNode($internalNode, 'server', ['host' => $host, 'port' => $port]);
         if ($serverNode === null) {
             $serverNode = $document->createElement('server');
             $serverNode->setAttribute('id', $this->generateId($name));

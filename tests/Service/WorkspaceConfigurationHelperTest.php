@@ -64,7 +64,7 @@ class WorkspaceConfigurationHelperTest extends TestCase
                 'workspace1.xml',
                 'example.com:443',
                 '/project',
-                'workspace1_with_port.xml',
+                'workspace1_with_443_port.xml',
             ],
             [
                 'workspace1.xml',
@@ -88,7 +88,7 @@ class WorkspaceConfigurationHelperTest extends TestCase
                 'workspace1_with_server.xml',
                 'example.com:443',
                 '/project',
-                'workspace1_with_port.xml',
+                'workspace1_with_both_ports.xml',
             ],
             [
                 'workspace1_with_server.xml',

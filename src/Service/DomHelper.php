@@ -125,7 +125,9 @@ class DomHelper
         }
 
         foreach ($attributes as $key => $value) {
-            if ($childNode->attributes->getNamedItem($key)->nodeValue !== $value) {
+            $attributeNode = $childNode->attributes->getNamedItem($key);
+            $attributeValue = $attributeNode !== null ? $attributeNode->nodeValue : null;
+            if ($attributeValue !== $value) {
                 return false;
             }
         }

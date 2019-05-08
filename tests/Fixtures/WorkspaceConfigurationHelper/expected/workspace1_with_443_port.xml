@@ -4,7 +4,7 @@
     <component name="PhpDebugGeneral" listening_started="true" />
     <component name="PhpServers">
         <servers>
-            <server id="0caaf24a-b1a0-c334-40c0-6afe99df9863" host="example.com" name="example.com" port="443" use_path_mappings="true">
+            <server id="c9d04e94-7bf3-9293-df20-54a69caf052e" host="example.com" name="example.com:443" port="443" use_path_mappings="true">
                 <path_mappings>
                     <mapping local-root="$PROJECT_DIR$" remote-root="/project"/>
                 </path_mappings>

@@ -58,6 +58,8 @@ class WorkspaceConfigurationHelper
         $serverNode->setAttribute('use_path_mappings', 'true');
 
         $pathMappings = $this->domHelper->findOrCreateChildNode($serverNode, 'path_mappings');
+
+        $this->domHelper->removeNodes($pathMappings, 'mapping');
         $mapping = $this->domHelper->findOrCreateChildNode($pathMappings, 'mapping');
         $mapping->setAttribute('local-root', '$PROJECT_DIR$');
         $mapping->setAttribute('remote-root', $remoteRoot);

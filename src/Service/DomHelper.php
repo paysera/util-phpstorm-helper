@@ -134,4 +134,12 @@ class DomHelper
 
         return true;
     }
+
+    public function removeNodes(DOMElement $parentNode, string $tagName, array $attributes = null)
+    {
+        $mappings = $this->findNodes($parentNode, $tagName, $attributes);
+        foreach ($mappings as $mapping) {
+            $parentNode->removeChild($mapping);
+        }
+    }
 }

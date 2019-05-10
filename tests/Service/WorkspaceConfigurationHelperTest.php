@@ -113,6 +113,12 @@ class WorkspaceConfigurationHelperTest extends TestCase
                 'C:\\My Projects\\MyProject',
                 'workspace2_with_path.xml',
             ],
+            [
+                'workspace_with_two_server_mappings.xml',
+                'example.com',
+                '/project',
+                'workspace_with_two_server_mappings.xml',
+            ],
         ];
     }
 

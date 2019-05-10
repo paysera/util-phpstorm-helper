@@ -17,6 +17,7 @@ class SetUpGlobalConfigurationCommand extends Command
 {
     private $externalToolsConfigurationHelper;
     private $pluginDownloader;
+    private $defaultGlobalConfiguration;
 
     public function __construct(
         ExternalToolsConfigurationHelper $externalToolsConfigurationHelper,
@@ -26,6 +27,13 @@ class SetUpGlobalConfigurationCommand extends Command
 
         $this->externalToolsConfigurationHelper = $externalToolsConfigurationHelper;
         $this->pluginDownloader = $pluginDownloader;
+        $this->defaultGlobalConfiguration = new SuggestedGlobalConfiguration();
+    }
+
+    public function setDefaultGlobalConfiguration(GlobalConfiguration $defaultGlobalConfiguration): self
+    {
+        $this->defaultGlobalConfiguration = $defaultGlobalConfiguration;
+        return $this;
     }
 
     protected function configure()
@@ -57,7 +65,7 @@ class SetUpGlobalConfigurationCommand extends Command
     {
         $configurationFilePath = $input->getArgument('path-to-config-file');
         if ($configurationFilePath === null) {
-            return new SuggestedGlobalConfiguration();
+            return $this->defaultGlobalConfiguration;
         }
 
         $globalConfiguration = require $configurationFilePath;

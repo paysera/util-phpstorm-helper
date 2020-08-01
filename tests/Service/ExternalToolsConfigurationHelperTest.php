@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Tests\Service;
 
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use Paysera\PhpStormHelper\Entity\ExternalToolConfiguration;
 use Paysera\PhpStormHelper\Service\DirectoryResolver;
 use Paysera\PhpStormHelper\Service\DomHelper;
 use Paysera\PhpStormHelper\Service\ExternalToolsConfigurationHelper;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ExternalToolsConfigurationHelperTest extends TestCase
+class ExternalToolsConfigurationHelperTest extends MockeryTestCase
 {
     const TARGET = __DIR__ . '/../../output/configuration';
 
@@ -51,11 +52,9 @@ class ExternalToolsConfigurationHelperTest extends TestCase
             );
         }
 
-        /** @var DirectoryResolver|MockObject $resolverMock */
-        $resolverMock = $this->createMock(DirectoryResolver::class);
-        $resolverMock->method('getConfigurationDirectory')->will(
-            $this->returnValue(self::TARGET)
-        );
+        /** @var MockInterface|DirectoryResolver $resolverMock */
+        $resolverMock = Mockery::mock(DirectoryResolver::class);
+        $resolverMock->expects('getConfigurationDirectory')->andReturn(self::TARGET);
 
         $helper = new ExternalToolsConfigurationHelper($resolverMock, new Filesystem(), new DomHelper());
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper;
@@ -7,10 +8,9 @@ use Alchemy\Zippy\Adapter\AdapterContainer;
 use Alchemy\Zippy\FileStrategy\ZipFileStrategy;
 use Alchemy\Zippy\Zippy;
 use GuzzleHttp\Client;
-use Paysera\PhpStormHelper\Command\SetUpWorkspaceCommand;
-use Paysera\PhpStormHelper\Command\SetUpConfigurationCommand;
-use Paysera\PhpStormHelper\Command\SetUpGlobalConfigurationCommand;
-use Paysera\PhpStormHelper\Command\SetUpServerCommand;
+use Paysera\PhpStormHelper\Command\ConfigureCommand;
+use Paysera\PhpStormHelper\Command\ConfigureInstallationCommand;
+use Paysera\PhpStormHelper\Service\ConfigurationOptionFinder;
 use Paysera\PhpStormHelper\Service\DirectoryResolver;
 use Paysera\PhpStormHelper\Service\DomHelper;
 use Paysera\PhpStormHelper\Service\ExternalToolsConfigurationHelper;
@@ -31,19 +31,15 @@ class PhpStormHelperApplication extends Application
         $domHelper = new DomHelper();
 
         $this->addCommands([
-            new SetUpConfigurationCommand(
+            new ConfigureCommand(
                 new StructureConfigurator($filesystem),
                 new GitignoreHelper($filesystem, [
                     file_get_contents(__DIR__ . '/Resources/gitignore-rules.txt'),
-                ])
-            ),
-            new SetUpServerCommand(
+                ]),
+                new ConfigurationOptionFinder($domHelper),
                 new WorkspaceConfigurationHelper($domHelper, $filesystem)
             ),
-            new SetUpWorkspaceCommand(
-                new WorkspaceConfigurationHelper($domHelper, $filesystem)
-            ),
-            new SetUpGlobalConfigurationCommand(
+            new ConfigureInstallationCommand(
                 new ExternalToolsConfigurationHelper(new DirectoryResolver(), $filesystem, $domHelper),
                 new PluginDownloader(new DirectoryResolver(), $this->createZippy(), new Client(), $filesystem)
             ),

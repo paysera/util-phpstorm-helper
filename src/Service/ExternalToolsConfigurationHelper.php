@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Service;
@@ -20,7 +21,7 @@ class ExternalToolsConfigurationHelper
     }
 
     /**
-     * @param array|ExternalToolConfiguration[] $externalToolConfigurations
+     * @param ExternalToolConfiguration[] $externalToolConfigurations
      */
     public function configureExternalTools(array $externalToolConfigurations)
     {

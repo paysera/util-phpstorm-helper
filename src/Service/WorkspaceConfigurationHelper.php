@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Service;
 
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class WorkspaceConfigurationHelper
@@ -16,7 +17,19 @@ class WorkspaceConfigurationHelper
         $this->filesystem = $filesystem;
     }
 
-    public function addServer(string $pathToWorkspaceXml, string $hostWithPort, string $remoteRoot)
+    public function setupServerMappings(string $pathToWorkspaceXml, array $serverMappings)
+    {
+        foreach ($serverMappings as $serverMapping) {
+            $parts = explode('@', $serverMapping);
+            if (count($parts) !== 2) {
+                throw new RuntimeException(sprintf('Invalid server mapping format: %s', $serverMapping));
+            }
+
+            $this->addServer($pathToWorkspaceXml, $parts[0], $parts[1]);
+        }
+    }
+
+    private function addServer(string $pathToWorkspaceXml, string $hostWithPort, string $remoteRoot)
     {
         if (strpos($hostWithPort, ':') === false) {
             $host = $hostWithPort;

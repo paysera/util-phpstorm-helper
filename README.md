@@ -67,37 +67,35 @@ sudo apt-get install php-zip
 
 Once (better to run when PhpStorm is closed):
 ```bash
-phpstorm-helper set-up-global-configuration
+phpstorm-helper configure-installation
 ```
-
-If you have, remove `.idea` from global gitignore file.
 
 For each project:
 - Close project
 ```bash
-phpstorm-helper set-up-configuration
-phpstorm-helper set-up-workspace
-# change following with your project address and path in docker container
-phpstorm-helper set-up-server project-url-address.docker:80 /project-path-inside/container
+phpstorm-helper configure
 ```
 - Reopen project
 
+Or, with more options:
+```bash
+phpstorm-helper configure --docker-image php-cli:7.4 --webpack-config-path config/webpack.js --server project-url-address.docker:80@/project-path-inside/container
+```
 
-Read more for detailed information.
+Following runs for the same project can skip the options unless you want to change any of those.
 
 ### Commands
 
-There are four commands that can be executed for three different use-cases:
-* setting up versioned configuration files. This requires structure of template files to use. Library provides the
-defaults used for repositories made by Paysera – feel free to use those or customise with your own;
-* two for setting up servers (for debugging support) and configuring composer settings.
-These are done in `workspace.xml` file, which cannot be versioned;
-* configuring external tools and installing common plugins.
+As you already noted, there are 2 different use-cases:
+* setting up (possibly) versioned configuration files in `.idea` and modifying `workspace.xml` 
+(which cannot be versioned). Library provides the defaults used for repositories made by Paysera – feel free 
+to use those or customise with your own;
+* configuring external tools and installing common plugins, which is done in PhpStorm installation folder.
 
 ### Setting up versioned configuration files
 
 ```bash
-phpstorm-helper set-up-configuration [project-root-dir] [path-to-configuration-template-structure]
+phpstorm-helper configure [project-root-dir] [path-to-configuration-template-structure]
 ```
 
 Features of default configuration:
@@ -120,23 +118,6 @@ environment;
 
 Some features require additional options or already existing files (like `.php_cs`) in current directory.
 Run with `--help` for more information.
-
-### Setting up servers
-
-```bash
-phpstorm-helper set-up-server host-with-port remote-root [project-root-dir]
-```
-
-For example:
-```bash
-phpstorm-helper set-up-server my-project.docker:443 /project
-```
-
-### Configuring composer and file template usage
-
-```bash
-phpstorm-helper set-up-workspace [project-root-dir]
-```
 
 ### Configuring external tools and installing plugins
 

@@ -7,14 +7,13 @@ use GitIgnoreWriter\GitIgnoreWriter;
 
 class ExtendedWriter extends GitIgnoreWriter
 {
-
     public function add($input)
     {
         $inputLines = $this->parseInput($input);
 
         $commentSection = [];
         $lines = [];
-        foreach($inputLines as $k => $line) {
+        foreach ($inputLines as $k => $line) {
             if ($line === '' || $line[0] === '#') {
                 $commentSection[] = $line;
                 continue;

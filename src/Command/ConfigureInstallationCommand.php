@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Command;
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use RuntimeException;
 
-class SetUpGlobalConfigurationCommand extends Command
+class ConfigureInstallationCommand extends Command
 {
     private $externalToolsConfigurationHelper;
     private $pluginDownloader;
@@ -39,7 +40,7 @@ class SetUpGlobalConfigurationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('set-up-global-configuration')
+            ->setName('configure-installation')
             ->addArgument(
                 'path-to-config-file',
                 InputArgument::OPTIONAL,

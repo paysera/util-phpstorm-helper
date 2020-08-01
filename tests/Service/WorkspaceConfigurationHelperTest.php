@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Paysera\PhpStormHelper\Tests\Service;
@@ -42,10 +43,9 @@ class WorkspaceConfigurationHelperTest extends TestCase
         $helper = new WorkspaceConfigurationHelper(new DomHelper(), new Filesystem());
 
         $path = self::TARGET . '/' . $filename;
-        $helper->addServer(
+        $helper->setupServerMappings(
             $path,
-            $hostWithPort,
-            $remoteRoot
+            [$hostWithPort . '@' . $remoteRoot]
         );
 
         $expected = $expected ?? $filename;
@@ -225,6 +225,4 @@ class WorkspaceConfigurationHelperTest extends TestCase
             ],
         ];
     }
-
-
 }

@@ -38,7 +38,7 @@ INTERPRETER;
     $interpreter = '';
 }
 
-if (isset($phpCsFixerConfigPath)) {
+if (isset($phpCsFixerConfigPath) && isset($phpCsFixerExecutable)) {
     $phpCsFixerConfig = <<<'FIXER'
 <component name="PhpCSFixer">
   <phpcsfixer_settings>
@@ -48,7 +48,7 @@ if (isset($phpCsFixerConfigPath)) {
 FIXER;
 
     $phpCsFixerConfig = strtr($phpCsFixerConfig, [
-        ':executable' => $phpCsFixerExecutable ?? 'vendor/bin/php-cs-fixer',
+        ':executable' => $phpCsFixerExecutable,
     ]);
 
 } else {

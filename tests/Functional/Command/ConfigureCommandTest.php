@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
-class SetUpConfigurationCommandTest extends TestCase
+class ConfigureCommandTest extends TestCase
 {
     const PARENT = __DIR__ . '/../../output/Functional';
     const TARGET1 = self::PARENT . '/structure1';
@@ -35,7 +35,7 @@ class SetUpConfigurationCommandTest extends TestCase
     public function testExecute()
     {
         $this->runCommand(sprintf(
-            'set-up-configuration %s',
+            'configure %s',
             escapeshellarg(self::TARGET1)
         ));
 
@@ -46,16 +46,7 @@ class SetUpConfigurationCommandTest extends TestCase
         );
         $this->assertFileExists(self::TARGET1 . '/.idea/file', 'Existing files are preserved');
 
-        $this->assertNotContains(
-            ".idea\n",
-            file_get_contents(self::TARGET1 . '/.gitignore'),
-            '.idea is removed from .gitignore'
-        );
-        $this->assertContains(
-            ".idea/**/workspace.xml\n",
-            file_get_contents(self::TARGET1 . '/.gitignore'),
-            '.gitignore is extended with concrete ignored files from inside .idea'
-        );
+        $this->assertContains(".idea\n", file_get_contents(self::TARGET1 . '/.gitignore'));
 
         $this->assertNotContains(
             'docker',
@@ -90,20 +81,29 @@ class SetUpConfigurationCommandTest extends TestCase
         );
     }
 
-    public function testExecuteWithSkipGitignore()
+    public function testExecuteWithUpdateGitignore()
     {
         $this->runCommand(sprintf(
-            'set-up-configuration %s --skip-gitignore',
+            'configure %s --update-gitignore',
             escapeshellarg(self::TARGET1)
         ));
 
-        $this->assertContains(".idea\n", file_get_contents(self::TARGET1 . '/.gitignore'));
+        $this->assertNotContains(
+            ".idea\n",
+            file_get_contents(self::TARGET1 . '/.gitignore'),
+            '.idea is removed from .gitignore'
+        );
+        $this->assertContains(
+            ".idea/**/workspace.xml\n",
+            file_get_contents(self::TARGET1 . '/.gitignore'),
+            '.gitignore is extended with concrete ignored files from inside .idea'
+        );
     }
 
     public function testExecuteWithDockerImage()
     {
         $this->runCommand(sprintf(
-            'set-up-configuration %s --docker-image example.org/image:7',
+            'configure %s --docker-image example.org/image:7',
             escapeshellarg(self::TARGET1)
         ));
 
@@ -123,7 +123,7 @@ class SetUpConfigurationCommandTest extends TestCase
     public function testExecuteWithWebpackConfigPath()
     {
         $this->runCommand(sprintf(
-            'set-up-configuration %s --webpack-config-path app/config/webpack.js',
+            'configure %s --webpack-config-path app/config/webpack.js',
             escapeshellarg(self::TARGET1)
         ));
 
@@ -137,76 +137,10 @@ class SetUpConfigurationCommandTest extends TestCase
         );
     }
 
-    public function testExecuteWithPhpCsFixerPath()
-    {
-        $this->runCommand(sprintf(
-            'set-up-configuration %s --php-cs-fixer-path .php_cs_custom',
-            escapeshellarg(self::TARGET1)
-        ));
-
-        $this->assertContains(
-            'PhpCSFixer',
-            file_get_contents(self::TARGET1 . '/.idea/inspectionProfiles/Project_Default.xml')
-        );
-        $this->assertContains(
-            'PhpCSFixer',
-            file_get_contents(self::TARGET1 . '/.idea/php.xml')
-        );
-        $this->assertContains(
-            '.php_cs_custom',
-            file_get_contents(self::TARGET1 . '/.idea/inspectionProfiles/Project_Default.xml')
-        );
-        $this->assertContains(
-            'vendor/bin/php-cs-fixer',
-            file_get_contents(self::TARGET1 . '/.idea/php.xml')
-        );
-    }
-
-    public function testExecuteWithForceSymfonySupport()
-    {
-        $this->runCommand(sprintf(
-            'set-up-configuration %s --force-symfony-support',
-            escapeshellarg(self::TARGET1)
-        ));
-
-        $this->assertFileExists(
-            self::TARGET1 . '/.idea/symfony2.xml'
-        );
-    }
-
-    public function testExecuteWithPhpCsFixerAndSymfonySupport()
-    {
-        $this->runCommand(sprintf(
-            'set-up-configuration %s',
-            escapeshellarg(self::TARGET2)
-        ));
-
-        $this->assertFileExists(
-            self::TARGET2 . '/.idea/symfony2.xml'
-        );
-
-        $this->assertContains(
-            'PhpCSFixer',
-            file_get_contents(self::TARGET2 . '/.idea/inspectionProfiles/Project_Default.xml')
-        );
-        $this->assertContains(
-            'PhpCSFixer',
-            file_get_contents(self::TARGET2 . '/.idea/php.xml')
-        );
-        $this->assertContains(
-            '/.php_cs"',
-            file_get_contents(self::TARGET2 . '/.idea/inspectionProfiles/Project_Default.xml')
-        );
-        $this->assertContains(
-            '"bin/php-cs-fixer"',
-            file_get_contents(self::TARGET2 . '/.idea/php.xml')
-        );
-    }
-
     public function testExecuteWithCustomConfig()
     {
         $this->runCommand(sprintf(
-            'set-up-configuration %s %s',
+            'configure %s %s',
             escapeshellarg(self::TARGET2),
             escapeshellarg(self::PARENT . '/config1')
         ));

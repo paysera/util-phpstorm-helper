@@ -111,7 +111,7 @@ Run with `--help` for more information.
 ### Configuring external tools and installing plugins
 
 ```bash
-phpstorm-helper set-up-global-configuration [path-to-config-file]
+phpstorm-helper configure-installation [path-to-config-file]
 ```
 
 `path-to-config-file` is path to `php` configuration file, which has the following structure:

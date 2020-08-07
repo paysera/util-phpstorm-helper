@@ -1,6 +1,6 @@
 # PhpStorm helper
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Latest Version][ico-version]][link-releases]
 [![Software License][ico-license]](LICENSE)
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
@@ -39,7 +39,7 @@ Download latest release of `phpstorm-helper.phar` from [releases page](https://g
 
 Automated:
 ```
-wget -O phpstorm-helper https://github.com/paysera/util-phpstorm-releases/releases/download/1.0.0/phpstorm-helper.phar
+curl -sLo phpstorm-helper https://github.com/paysera/util-phpstorm-helper/releases/download/1.0.0/phpstorm-helper.phar
 chmod +x phpstorm-helper
 ./phpstorm-helper self-update
 mv phpstorm-helper /usr/local/bin/phpstorm-helper
@@ -196,15 +196,13 @@ You can fix any code style issues using this command:
 composer fix-cs
 ```
 
-[ico-version]: https://img.shields.io/packagist/v/paysera/util-phpstorm-helper.svg?style=flat-square
+[ico-version]: https://img.shields.io/github/v/release/paysera/util-phpstorm-helper?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/paysera/util-phpstorm-helper/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/paysera/util-phpstorm-helper.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/paysera/util-phpstorm-helper.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/paysera/util-phpstorm-helper.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/paysera/util-phpstorm-helper
+[link-releases]: https://github.com/paysera/util-phpstorm-helper/releases
 [link-travis]: https://travis-ci.org/paysera/util-phpstorm-helper
 [link-scrutinizer]: https://scrutinizer-ci.com/g/paysera/util-phpstorm-helper/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/paysera/util-phpstorm-helper
-[link-downloads]: https://packagist.org/packages/paysera/util-phpstorm-helper

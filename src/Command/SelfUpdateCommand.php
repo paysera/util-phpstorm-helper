@@ -40,12 +40,13 @@ class SelfUpdateCommand extends Command
 
         if ($result) {
             $styledOutput->success(sprintf(
-                'Your PHAR has been updated from "%s" to "%s".',
+                '%s has been updated from "%s" to "%s".',
+                $this->getLocalPharName(),
                 $this->updater->getOldVersion(),
                 $this->updater->getNewVersion()
             ));
         } else {
-            $styledOutput->success('Your PHAR is already up to date.');
+            $styledOutput->success(sprintf('%s is already up to date.', $this->getLocalPharName()));
         }
 
         return 0;

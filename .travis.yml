@@ -38,3 +38,4 @@ deploy:
         repo: paysera/util-phpstorm-helper
         tags: true
         condition: "$RELEASE"
+    skip_cleanup: true

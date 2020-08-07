@@ -8,8 +8,11 @@ use Alchemy\Zippy\Adapter\AdapterContainer;
 use Alchemy\Zippy\FileStrategy\ZipFileStrategy;
 use Alchemy\Zippy\Zippy;
 use GuzzleHttp\Client;
+use Humbug\SelfUpdate\Strategy\GithubStrategy;
+use Humbug\SelfUpdate\Updater;
 use Paysera\PhpStormHelper\Command\ConfigureCommand;
 use Paysera\PhpStormHelper\Command\ConfigureInstallationCommand;
+use Paysera\PhpStormHelper\Command\SelfUpdateCommand;
 use Paysera\PhpStormHelper\Service\ConfigurationOptionFinder;
 use Paysera\PhpStormHelper\Service\DirectoryResolver;
 use Paysera\PhpStormHelper\Service\DomHelper;
@@ -23,9 +26,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PhpStormHelperApplication extends Application
 {
-    public function __construct(string $name = 'PhpStormHelper', string $version = 'UNKNOWN')
+    public function __construct()
     {
-        parent::__construct($name, $version);
+        parent::__construct('phpstorm-helper', '@application_version@');
 
         $filesystem = new Filesystem();
         $domHelper = new DomHelper();
@@ -43,6 +46,7 @@ class PhpStormHelperApplication extends Application
                 new ExternalToolsConfigurationHelper(new DirectoryResolver(), $filesystem, $domHelper),
                 new PluginDownloader(new DirectoryResolver(), $this->createZippy(), new Client(), $filesystem)
             ),
+            $this->createSelfUpdateCommand(),
         ]);
     }
 
@@ -56,5 +60,18 @@ class PhpStormHelperApplication extends Application
         $zippy = new Zippy($adapters);
         $zippy->addStrategy(new ZipFileStrategy($adapters));
         return $zippy;
+    }
+
+    private function createSelfUpdateCommand(): SelfUpdateCommand
+    {
+        $strategy = new GithubStrategy();
+        $strategy->setCurrentLocalVersion('@application_version@');
+        $strategy->setPharName('phpstorm-helper.phar');
+        $strategy->setPackageName('paysera/util-phpstorm-helper');
+
+        $updater = new Updater(null, false);
+        $updater->setStrategyObject($strategy);
+
+        return new SelfUpdateCommand($updater);
     }
 }

@@ -36,24 +36,14 @@ to modify that file;
 
 ## Installation
 
-As a library, if you want to reuse PHP code in your own scripts:
+Download latest release of `phpstorm-helper.phar` from [releases page](https://github.com/paysera/util-phpstorm-releases/releases).
 
-```bash
-composer require paysera/util-phpstorm-helper
+Automated:
 ```
-
-As executable:
-* clone repository;
-* run `./phpstorm-helper --help`
-
-You can also install library as [global composer dependency](https://getcomposer.org/doc/03-cli.md#global):
-```bash
-composer global require paysera/util-phpstorm-helper
-
-# add composer bin directory to PATH – this example is just for this session
-PATH=$PATH:`composer global config bin-dir --absolute`
-
-phpstorm-helper --help
+wget -O phpstorm-helper https://github.com/paysera/util-phpstorm-releases/releases/download/1.0.0/phpstorm-helper.phar
+chmod +x phpstorm-helper
+./phpstorm-helper self-update
+mv phpstorm-helper /usr/local/bin/phpstorm-helper
 ```
 
 You will also need zip library to download and extract the plugins. To install on Ubuntu:

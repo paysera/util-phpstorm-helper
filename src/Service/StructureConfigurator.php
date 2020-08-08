@@ -40,7 +40,7 @@ class StructureConfigurator
         }, $filename);
 
         if (mb_substr($filename, -13) === '.template.php') {
-            $contents = $this->parseTemplate($file->getRealPath(), $options);
+            $contents = $this->parseTemplate($file->getPathname(), $options);
             $filename = mb_substr($filename, 0, -13);
         } else {
             $contents = $file->getContents();

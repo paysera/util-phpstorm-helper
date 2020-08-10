@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigureCommand extends Command
 {
@@ -22,13 +23,15 @@ class ConfigureCommand extends Command
     private $configurationOptionFinder;
     private $workspaceConfigurationHelper;
     private $sourceFolderHelper;
+    private $filesystem;
 
     public function __construct(
         StructureConfigurator $structureConfigurator,
         GitignoreHelper $gitignoreHelper,
         ConfigurationOptionFinder $configurationOptionFinder,
         WorkspaceConfigurationHelper $workspaceConfigurationHelper,
-        SourceFolderHelper $sourceFolderHelper
+        SourceFolderHelper $sourceFolderHelper,
+        Filesystem $filesystem
     ) {
         parent::__construct();
 
@@ -37,6 +40,7 @@ class ConfigureCommand extends Command
         $this->configurationOptionFinder = $configurationOptionFinder;
         $this->workspaceConfigurationHelper = $workspaceConfigurationHelper;
         $this->sourceFolderHelper = $sourceFolderHelper;
+        $this->filesystem = $filesystem;
     }
 
     protected function configure()
@@ -82,6 +86,12 @@ Server mappings, for example my-project.docker:443@/path/in/server.
 Server is added in the list unless one already exists with such host and post.
 DOC
             )
+            ->addOption(
+                'no-diff',
+                null,
+                InputOption::VALUE_NONE,
+                'Pass if you don\'t want diff to be outputed'
+            )
         ;
     }
 
@@ -92,11 +102,17 @@ DOC
             $target = realpath('.');
         }
 
+        $backupFolder = $this->backupConfiguration($target);
         $this->configureStructure($input, $target);
         $this->configureWorkspace($input, $target);
 
         if ($input->getOption('update-gitignore')) {
             $this->gitignoreHelper->setupGitignore($target . '/.gitignore');
+        }
+
+        $output->writeln('Made backup of <info>.idea</info> to <info>' . $backupFolder . '</info>');
+        if (!$input->getOption('no-diff')) {
+            $this->printDiffFromBackup($backupFolder, $target, $output);
         }
 
         $output->writeln('Restart PhpStorm instance for changes to take effect');
@@ -184,5 +200,31 @@ DOC
         }
 
         return json_decode(file_get_contents($composerPath), true) ?: [];
+    }
+
+    private function backupConfiguration(string $target): string
+    {
+        $pathToIdea = $target . '/.idea/';
+        $backupFolder = sprintf(
+            '%s/phpstorm-helper-backups/%s/%s',
+            sys_get_temp_dir(),
+            basename($target),
+            time()
+        );
+
+        $this->filesystem->mirror($pathToIdea, $backupFolder);
+
+        return $backupFolder;
+    }
+
+    private function printDiffFromBackup(string $backupFolder, string $target, OutputInterface $output)
+    {
+        $output->writeln("Diff of the changes, excluding workspace.xml file:\n\n");
+        $command = sprintf(
+            'diff -N -r -x workspace.xml %s %s',
+            escapeshellarg($target . '/.idea/'),
+            escapeshellarg($backupFolder)
+        );
+        system($command);
     }
 }

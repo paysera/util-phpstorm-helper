@@ -44,7 +44,8 @@ class PhpStormHelperApplication extends Application
                 ]),
                 $configurationOptionFinder,
                 new WorkspaceConfigurationHelper($domHelper, $filesystem),
-                new SourceFolderHelper($configurationOptionFinder, $this->createDefaultSourceFolders())
+                new SourceFolderHelper($configurationOptionFinder, $this->createDefaultSourceFolders()),
+                new Filesystem()
             ),
             new ConfigureInstallationCommand(
                 new ExternalToolsConfigurationHelper(new DirectoryResolver(), $filesystem, $domHelper),

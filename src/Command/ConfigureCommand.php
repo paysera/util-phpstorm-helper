@@ -6,6 +6,7 @@ namespace Paysera\PhpStormHelper\Command;
 
 use Paysera\PhpStormHelper\Service\ConfigurationOptionFinder;
 use Paysera\PhpStormHelper\Service\GitignoreHelper;
+use Paysera\PhpStormHelper\Service\SourceFolderHelper;
 use Paysera\PhpStormHelper\Service\StructureConfigurator;
 use Paysera\PhpStormHelper\Service\WorkspaceConfigurationHelper;
 use Symfony\Component\Console\Command\Command;
@@ -20,12 +21,14 @@ class ConfigureCommand extends Command
     private $gitignoreHelper;
     private $configurationOptionFinder;
     private $workspaceConfigurationHelper;
+    private $sourceFolderHelper;
 
     public function __construct(
         StructureConfigurator $structureConfigurator,
         GitignoreHelper $gitignoreHelper,
         ConfigurationOptionFinder $configurationOptionFinder,
-        WorkspaceConfigurationHelper $workspaceConfigurationHelper
+        WorkspaceConfigurationHelper $workspaceConfigurationHelper,
+        SourceFolderHelper $sourceFolderHelper
     ) {
         parent::__construct();
 
@@ -33,6 +36,7 @@ class ConfigureCommand extends Command
         $this->gitignoreHelper = $gitignoreHelper;
         $this->configurationOptionFinder = $configurationOptionFinder;
         $this->workspaceConfigurationHelper = $workspaceConfigurationHelper;
+        $this->sourceFolderHelper = $sourceFolderHelper;
     }
 
     protected function configure()
@@ -131,6 +135,8 @@ DOC
         }
 
         $options['symfonyEnabled'] = $this->checkSymfonySupport($composerPath);
+
+        $options['sourceFolders'] = $this->sourceFolderHelper->getSourceFolders($target);
 
         $this->structureConfigurator->configure($path, $target, $options);
     }

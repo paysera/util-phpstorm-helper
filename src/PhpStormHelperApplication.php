@@ -13,12 +13,14 @@ use Humbug\SelfUpdate\Updater;
 use Paysera\PhpStormHelper\Command\ConfigureCommand;
 use Paysera\PhpStormHelper\Command\ConfigureInstallationCommand;
 use Paysera\PhpStormHelper\Command\SelfUpdateCommand;
+use Paysera\PhpStormHelper\Entity\SourceFolder;
 use Paysera\PhpStormHelper\Service\ConfigurationOptionFinder;
 use Paysera\PhpStormHelper\Service\DirectoryResolver;
 use Paysera\PhpStormHelper\Service\DomHelper;
 use Paysera\PhpStormHelper\Service\ExternalToolsConfigurationHelper;
 use Paysera\PhpStormHelper\Service\GitignoreHelper;
 use Paysera\PhpStormHelper\Service\PluginDownloader;
+use Paysera\PhpStormHelper\Service\SourceFolderHelper;
 use Paysera\PhpStormHelper\Service\StructureConfigurator;
 use Paysera\PhpStormHelper\Service\WorkspaceConfigurationHelper;
 use Symfony\Component\Console\Application;
@@ -32,6 +34,7 @@ class PhpStormHelperApplication extends Application
 
         $filesystem = new Filesystem();
         $domHelper = new DomHelper();
+        $configurationOptionFinder = new ConfigurationOptionFinder($domHelper);
 
         $this->addCommands([
             new ConfigureCommand(
@@ -39,8 +42,9 @@ class PhpStormHelperApplication extends Application
                 new GitignoreHelper($filesystem, [
                     file_get_contents(__DIR__ . '/Resources/gitignore-rules.txt'),
                 ]),
-                new ConfigurationOptionFinder($domHelper),
-                new WorkspaceConfigurationHelper($domHelper, $filesystem)
+                $configurationOptionFinder,
+                new WorkspaceConfigurationHelper($domHelper, $filesystem),
+                new SourceFolderHelper($configurationOptionFinder, $this->createDefaultSourceFolders())
             ),
             new ConfigureInstallationCommand(
                 new ExternalToolsConfigurationHelper(new DirectoryResolver(), $filesystem, $domHelper),
@@ -73,5 +77,21 @@ class PhpStormHelperApplication extends Application
         $updater->setStrategyObject($strategy);
 
         return new SelfUpdateCommand($updater);
+    }
+
+    private function createDefaultSourceFolders(): array
+    {
+        return [
+            new SourceFolder('src', SourceFolder::TYPE_SOURCE),
+            new SourceFolder('app', SourceFolder::TYPE_SOURCE),
+            new SourceFolder('tests', SourceFolder::TYPE_TEST_SOURCE),
+            new SourceFolder('vendor', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('app/cache', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('app/logs', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('app/uploads', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('var', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('web/compiled', SourceFolder::TYPE_EXCLUDED),
+            new SourceFolder('public/compiled', SourceFolder::TYPE_EXCLUDED),
+        ];
     }
 }

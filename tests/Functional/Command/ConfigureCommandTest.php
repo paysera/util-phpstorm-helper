@@ -160,6 +160,6 @@ class ConfigureCommandTest extends TestCase
         $output = new BufferedOutput();
 
         $this->assertSame(0, $application->run($input, $output));
-        $this->assertSame("Restart PhpStorm instance for changes to take effect\n", $output->fetch());
+        $this->assertContains('Restart PhpStorm instance for changes to take effect', $output->fetch());
     }
 }

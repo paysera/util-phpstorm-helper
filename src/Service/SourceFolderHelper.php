@@ -45,9 +45,14 @@ class SourceFolderHelper
      */
     private function findAdditionalTestFolders(string $projectRootDir): array
     {
+        $srcDir = $projectRootDir . '/src';
+        if (!is_dir($srcDir)) {
+            return [];
+        }
+
         /** @var SplFileInfo[] $additionalTestDirectories */
         $additionalTestDirectories = (new Finder())
-            ->in($projectRootDir . '/src')
+            ->in($srcDir)
             ->name(['Test', 'Tests'])
             ->directories()
         ;

@@ -102,7 +102,7 @@ DOC
             $target = realpath('.');
         }
 
-        $backupFolder = $this->backupConfiguration($target);
+        $backupFolder = $this->backupConfiguration($target, $output);
         $this->configureStructure($input, $target);
         $this->configureWorkspace($input, $target);
 
@@ -110,8 +110,7 @@ DOC
             $this->gitignoreHelper->setupGitignore($target . '/.gitignore');
         }
 
-        $output->writeln('Made backup of <info>.idea</info> to <info>' . $backupFolder . '</info>');
-        if (!$input->getOption('no-diff')) {
+        if ($backupFolder !== null && !$input->getOption('no-diff')) {
             $this->printDiffFromBackup($backupFolder, $target, $output);
         }
 
@@ -202,9 +201,13 @@ DOC
         return json_decode(file_get_contents($composerPath), true) ?: [];
     }
 
-    private function backupConfiguration(string $target): string
+    private function backupConfiguration(string $target, OutputInterface $output)
     {
         $pathToIdea = $target . '/.idea/';
+        if (!is_dir($pathToIdea)) {
+            return null;
+        }
+
         $backupFolder = sprintf(
             '%s/phpstorm-helper-backups/%s/%s',
             sys_get_temp_dir(),
@@ -214,17 +217,53 @@ DOC
 
         $this->filesystem->mirror($pathToIdea, $backupFolder);
 
+        $output->writeln('Made backup of <info>.idea</info> to <info>' . $backupFolder . '</info>');
+
         return $backupFolder;
     }
 
     private function printDiffFromBackup(string $backupFolder, string $target, OutputInterface $output)
     {
-        $output->writeln("Diff of the changes, excluding workspace.xml file:\n\n");
         $command = sprintf(
-            'diff -N -r -x workspace.xml %s %s',
-            escapeshellarg($target . '/.idea/'),
-            escapeshellarg($backupFolder)
+            'git --no-pager diff --color=always --no-index %s %s',
+            escapeshellarg($backupFolder),
+            escapeshellarg($target . '/.idea/')
         );
-        system($command);
+        exec($command, $diffOutput);
+
+        if (count($diffOutput) === 0) {
+            $output->writeln('No changes were made.');
+            return;
+        }
+
+        $filteredDiffOutput = $this->filterDiff($diffOutput);
+
+        if (count($filteredDiffOutput) !== count($diffOutput)) {
+            $output->writeln('Changes in workspace.xml were made or workspace.xml was updated by PhpStorm itself.');
+        }
+
+        if (count($filteredDiffOutput) === 0) {
+            return;
+        }
+
+        $output->writeln("Diff of the changes, excluding workspace.xml:\n\n");
+        $output->writeln(implode("\n", $filteredDiffOutput) . "\n\n");
+    }
+
+    private function filterDiff(array $diffOutput): array
+    {
+        $include = true;
+        $filtered = [];
+        foreach ($diffOutput as $line) {
+            if (strpos($line, 'diff --git') !== false) {
+                $include = strpos($line, 'workspace.xml') === false;
+            }
+
+            if ($include) {
+                $filtered[] = $line;
+            }
+        }
+
+        return $filtered;
     }
 }

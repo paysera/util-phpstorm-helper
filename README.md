@@ -42,7 +42,7 @@ Automated:
 curl -sLo phpstorm-helper https://github.com/paysera/util-phpstorm-helper/releases/download/1.0.0/phpstorm-helper.phar
 chmod +x phpstorm-helper
 ./phpstorm-helper self-update
-mv phpstorm-helper /usr/local/bin/phpstorm-helper
+sudo mv phpstorm-helper /usr/local/bin/phpstorm-helper
 ```
 
 You will also need zip library to download and extract the plugins. To install on Ubuntu:

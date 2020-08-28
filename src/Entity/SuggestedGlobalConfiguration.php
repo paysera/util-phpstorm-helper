@@ -17,21 +17,21 @@ class SuggestedGlobalConfiguration extends GlobalConfiguration
             ->setExternalToolConfigurations([
                 (new ExternalToolConfiguration())
                     ->setName('Fix CS (debug)')
-                    ->setCommand('bin/php-cs-fixer')
+                    ->setCommand('bin/paysera-php-cs-fixer')
                     ->setParameters('fix --diff --verbose --config=$ProjectFileDir$/.php_cs --dry-run "$FilePath$"')
                     ->setSynchronizationRequired(false)
                     ->setConsoleShownAlways(true),
                 (new ExternalToolConfiguration())
                     ->setName('Fix CS (safe)')
-                    ->setCommand('bin/php-cs-fixer')
+                    ->setCommand('bin/paysera-php-cs-fixer')
                     ->setParameters('fix --config=$ProjectFileDir$/.php_cs_safe "$FilePath$"'),
                 (new ExternalToolConfiguration())
                     ->setName('Fix CS (risky)')
-                    ->setCommand('bin/php-cs-fixer')
+                    ->setCommand('bin/paysera-php-cs-fixer')
                     ->setParameters('fix --config=$ProjectFileDir$/.php_cs_risky "$FilePath$"'),
                 (new ExternalToolConfiguration())
                     ->setName('Fix CS (everything)')
-                    ->setCommand('bin/php-cs-fixer')
+                    ->setCommand('bin/paysera-php-cs-fixer')
                     ->setParameters('fix --config=$ProjectFileDir$/.php_cs "$FilePath$"'),
             ])
             ->setPlugins([

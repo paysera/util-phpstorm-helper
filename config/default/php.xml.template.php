@@ -12,7 +12,7 @@ $xml = <<<'XML'
     </include_path>
   </component>
   :interpreter
-  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
+  <component name="PhpProjectSharedConfiguration" php_language_level=":phpVersion" />
   <component name="PhpUnit">
     <phpunit_settings>
       <phpunit_by_interpreter interpreter_id="a91e239a-bac5-4e38-a9ca-7f394e1cfd37" load_method="CUSTOM_LOADER" configuration_file_path="/opt/project/phpunit.xml.dist" custom_loader_path="/opt/project/vendor/autoload.php" phpunit_phar_path="" use_configuration_file="true" />
@@ -61,5 +61,6 @@ echo strtr(
     [
         ':interpreter' => $interpreter,
         ':phpCsFixerConfig' => $phpCsFixerConfig,
+        ':phpVersion' => $phpVersion ?? '7',
     ]
 );

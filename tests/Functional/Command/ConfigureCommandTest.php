@@ -150,6 +150,36 @@ class ConfigureCommandTest extends TestCase
         );
     }
 
+    public function testExecuteWithPhpCsFixerConfigAndComposerJson()
+    {
+        $this->runCommand(sprintf(
+            'configure %s',
+            escapeshellarg(self::TARGET2)
+        ));
+
+        $this->assertContains(
+            'PhpCSFixer',
+            file_get_contents(self::TARGET2 . '/.idea/inspectionProfiles/Project_Default.xml'),
+            'PhpCsFixer support is enabled if config is found'
+        );
+        $this->assertContains(
+            'PhpCSFixer',
+            file_get_contents(self::TARGET2 . '/.idea/php.xml'),
+            'PhpCsFixer support is enabled if config is found'
+        );
+
+        $this->assertFileExists(
+            self::TARGET2 . '/.idea/symfony2.xml',
+            'Symfony support is enabled if installed in composer'
+        );
+
+        $this->assertContains(
+            '7.2',
+            file_get_contents(self::TARGET2 . '/.idea/php.xml'),
+            'PHP version is taken from composer file'
+        );
+    }
+
     private function runCommand(string $command)
     {
         $application = new PhpStormHelperApplication();

@@ -145,13 +145,17 @@ DOC
 
         if (file_exists($target . '/.php_cs')) {
             $options['phpCsFixerConfigPath'] = '.php_cs';
-            $fixerBinary = $this->checkPayseraPhpCsFixerSupport($composerPath) ? 'paysera-php-cs-fixer' : 'php-cs-fixer';
+            $fixerBinary = $this->hasPayseraPhpCsFixerInstalled($composerPath)
+                ? 'paysera-php-cs-fixer'
+                : 'php-cs-fixer';
             $options['phpCsFixerExecutable'] = $this->getBinDirectory($composerPath) . '/' . $fixerBinary;
         }
 
         $options['symfonyEnabled'] = $this->checkSymfonySupport($composerPath);
 
         $options['sourceFolders'] = $this->sourceFolderHelper->getSourceFolders($target);
+
+        $options['phpVersion'] = $this->determinePhpVersion($composerPath);
 
         $this->structureConfigurator->configure($path, $target, $options);
     }
@@ -176,7 +180,7 @@ DOC
         );
     }
 
-    private function checkPayseraPhpCsFixerSupport(string $composerPath)
+    private function hasPayseraPhpCsFixerInstalled(string $composerPath)
     {
         return $this->isPackageRequired($composerPath, 'paysera/lib-php-cs-fixer-config');
     }
@@ -184,6 +188,21 @@ DOC
     private function getBinDirectory(string $composerPath)
     {
         return $this->parseComposer($composerPath)['config']['bin-dir'] ?? 'vendor/bin';
+    }
+
+    private function determinePhpVersion(string $composerPath): ?string
+    {
+        $composerContents = $this->parseComposer($composerPath);
+        $phpVersionConstraint = $composerContents['require']['php'] ?? null;
+        if ($phpVersionConstraint === null) {
+            return null;
+        }
+
+        if (preg_match('/\d\.\d/', $phpVersionConstraint, $matches) === 1) {
+            return $matches[0];
+        }
+
+        return null;
     }
 
     private function isPackageRequired(string $composerPath, string $package)

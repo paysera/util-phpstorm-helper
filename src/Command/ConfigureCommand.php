@@ -187,7 +187,7 @@ DOC
 
     private function getBinDirectory(string $composerPath)
     {
-        return $this->parseComposer($composerPath)['config']['bin-dir'] ?? 'vendor/bin';
+        return rtrim($this->parseComposer($composerPath)['config']['bin-dir'] ?? 'vendor/bin', '/');
     }
 
     private function determinePhpVersion(string $composerPath): ?string
